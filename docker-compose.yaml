@@ -1,0 +1,42 @@
+version: '2.15.1'
+
+networks:
+  red_wp:
+
+volumes:
+  db_data:
+  wp_data:
+
+services:
+
+  server-bd:
+    image: mariadb
+    networks:
+      - red_wp
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+       #MYSQL_DATABASE: bd_wp
+      - MYSQL_DATABASE=bd_wp
+      - MYSQL_USER=user_wp
+      - MYSQL_PASSWORD=admin
+      - MYSQL_ROOT_PASSWORD=admin
+    ports:
+      - "3307:3306"  
+  server_wp:
+    image: wordpress
+    networks:
+      - red_wp
+    volumes:
+      - wp_data:/var/www/html/wp-content
+    environment:
+      - WORDPRESS_DB_HOST=server-bd
+      - WORDPRESS_DB_USER=user_wp
+      - WORDPRESS_DB_PASSWORD=admin
+      - WORDPRESS_DB_NAME=bd_wp
+    ports:
+      - "80:80"
+    depends_on:
+      - server-bd
+    restart: always
+
