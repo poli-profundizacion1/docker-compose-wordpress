@@ -4,3 +4,10 @@ docker network create red_wp
 
 docker run -d --name server-bd --network red_wp --mount source=wordpress-db,target=/var/lib/mysql -e MYSQL_DATABASE=bd_wp -e MYSQL_USER=user_wp -e MYSQL_PASSWORD=admin -e MYSQL_ROOT_PASSWORD=admin mariadb
 docker run -d --name server_wp --network red_wp -v /opt/wordpress:/var/www/html/wp-content -e WORDPRESS_DB_HOST=server-bd -e WORDPRESS_DB_USER=user_wp -e WORDPRESS_DB_PASSWORD=admin -e WORDPRESS_DB_NAME=bd_wp -p 80:80 wordpress
+
+
+---- comandos docker-compose
+
+docker-compose up -d = subir el container
+docker-compose down = bajarlos
+docker-compose down -v = bajar pero adicional elimina todo

@@ -5,11 +5,14 @@ networks:
 
 volumes:
   db_data:
+    name: db_data
   wp_data:
+    name: wp_data
 
 services:
 
   server-bd:
+    container_name: server-bd
     image: mariadb
     networks:
       - red_wp
@@ -24,6 +27,7 @@ services:
     ports:
       - "3307:3306"  
   server_wp:
+    container_name: server_wp
     image: wordpress
     networks:
       - red_wp
