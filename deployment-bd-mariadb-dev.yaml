@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: server-bd
+  name: server-bd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server-bd
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: server-bd
+    spec:
+      containers:
+        - image: mariadb
+          name: mariadb
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: env-bd
+                  key: database
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: env-bd
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: env-bd
+                  key: password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: env-bd
+                  key: rootpassword
+          volumeMounts:
+            - name: data-mariadb
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: data-mariadb
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+          #hostPath:
+          #  path: /var/lib/mysql
+          #  type: DirectoryOrCreate

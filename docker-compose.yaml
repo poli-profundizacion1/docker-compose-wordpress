@@ -43,4 +43,12 @@ services:
     depends_on:
       - server-bd
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.15'
+          memory: 250M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
 
